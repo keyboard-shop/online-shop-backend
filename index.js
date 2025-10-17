@@ -37,3 +37,17 @@ app.use('/api/users', userRoutes);
 app.listen(process.env.PORT, () => {
     console.log(`OK server at ${PORT} is running`);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
