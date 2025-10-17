@@ -1,0 +1,43 @@
+
+
+
+
+
+Scenario start ===================================================================
+
+Seller (multiple sellers):
+    1. Can create a book they want to sell.
+    2. Can send a message to a buyer and to the admin.
+    3. Can like a buyer.
+
+Buyer (multiple buyers):
+    1. Can create a book they want to purchase.
+    2. Can send a message to a seller and to the admin.
+
+Admin (one admin):
+    1. Can delete a seller's message.
+    2. Can delete a buyer's message.
+    3. Can respond to the buyer.
+    4. Can respond to the seller.
+
+Scenario end =====================================================================    
+
+
+
+Example-1 backend middleware
+    router.post('/dashboard', verifyToken, userDashboard);
+
+
+Example-2 frontend route
+   <ProtectedRoute>
+        <Dashboard/>
+   </ProtectedRoute>
+
+
+Example-3
+   Dashboard Schema()
+      userId: {
+       type: mongoose.Schema.Types.ObjectId,
+       ref: 'User',
+       required: true,
+      }
