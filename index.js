@@ -5,6 +5,13 @@ import dotenv from "dotenv"//for .env dotenv.config()
 import mongoose from "mongoose"// to connect MongoDB
 
 import userRoutes from './routes/userRoutes.js'; 
+import cors from 'cors';
+
+
+app.use(cors({
+    origin: ["https://online-shop-frontend-theta.vercel.app"],
+    methods: ["GET", "POST"]
+}));
 
 const app = express()
 app.use(express.json());
