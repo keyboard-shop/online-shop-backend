@@ -9,11 +9,15 @@ import cors from 'cors';
 
 
 const app = express()
-app.use(cors({
-    origin: ["https://project-theta.vercel.app/"],
-    methods: ["GET", "POST"]
-}));
+// app.use(cors({
+//     origin: ["https://project-theta.vercel.app/"],
+//     methods: ["GET", "POST"]
+// }));
+
 app.use(express.json());
+
+//app.use(cors({ origin: ['https://online-shop-frontend-theta.vercel.app/'], credentials: true }))
+app.use(cors({ origin: ['https://online-shop-frontend-theta.vercel.app'], credentials: true }))
 
 
 dotenv.config()// for .env ==> process.env.PORT
