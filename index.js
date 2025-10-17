@@ -9,7 +9,7 @@ import cors from 'cors';
 
 
 app.use(cors({
-    origin: ["https://online-shop-frontend-theta.vercel.app"],
+    origin: ["https://online-shop-frontend-theta.vercel.app/"],
     methods: ["GET", "POST"]
 }));
 
