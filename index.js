@@ -8,16 +8,18 @@ import userRoutes from './routes/userRoutes.js';
 import cors from 'cors';
 
 
+const app = express()
 app.use(cors({
-    origin: ["https://online-shop-frontend-theta.vercel.app/"],
+    origin: ["https://project-theta.vercel.app/"],
     methods: ["GET", "POST"]
 }));
-
-const app = express()
 app.use(express.json());
+
 
 dotenv.config()// for .env ==> process.env.PORT
 const PORT = process.env.PORT
+
+//  origin: ["https://online-shop-frontend-theta.vercel.app/"],
 
 // MongoDB
 mongoose.connect(process.env.MONGO_URI)
