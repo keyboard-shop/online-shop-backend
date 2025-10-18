@@ -109,7 +109,7 @@ export const userOut = (req, res) => {
 
 
 
-// createBook
+// createBook, to routes/userRoutes.js
 export const createBook = async (req, res) => {
 
     const book = req.body; // <form> will send this data or from Postman

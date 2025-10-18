@@ -1,0 +1,46 @@
+
+
+
+
+
+for Vercel, deploy ============================START========================================
+
+1. frontend folder
+create vercel.json file
++
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "index.js", 
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+         "dest": "index.js"  
+      }
+    ]
+  }
+
+
+  2. backend folder
+
+  index.js server
+  +
+  import cors from 'cors';
+  app.use(cors({ origin: ['https://frontend-URL-here.vercel.app'], credentials: true })) <==== IT Works for Vercel
+
+
+  3. backend folder
+  from .env
+  +
+  MONGO_URI=mongodb+srv: MongoDB connection string here
+  PORT=8080
+  JWT_SECRET=randompasswordhere
+
+  Add above environment variables to the Vercel backend folder upon deployment.
+
+
+  for Vercel, deploy ============================END========================================

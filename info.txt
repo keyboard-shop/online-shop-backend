@@ -5,6 +5,12 @@ online-shop-backend project created: October mid 2025
 
 Scenario start ===================================================================
 
+Scenario:
+There are three types of users: Sellers, Buyers, and an Admin.
+Each type has its own dashboard.
+Do we need to use a Role-Based approach so that each user has access to his own dashboard:
+'seller' 'buyer' or 'admin' or can we simply use a browser token and an _id from MongoDB ?
+
 Seller (multiple sellers):
     1. Can create a book they want to sell.
     2. Can send a message to a buyer and to the admin.
