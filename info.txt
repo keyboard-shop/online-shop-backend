@@ -47,3 +47,72 @@ Example-3
        ref: 'User',
        required: true,
       }
+
+
+
+
+
+
+
+
+Example-4
+       role: {
+            type: String,
+            enum: ["seller", "buyer", "admin"],
+            default: "buyer",
+        }, 
+
+
+
+
+
+
+Example-5
+       <Routes>
+                {/* Public Route */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<Login />} />
+                
+                {/* Role-based Routes */}
+                <Route
+                    path="/admin"
+                    element={
+                        <RoleBasedRoute allowedRoles={['admin']} >
+                            <AdminPanel />
+                        </RoleBasedRoute>
+                    }
+                />
+                
+                <Route
+                    path="/seller"
+                    element={
+                        <RoleBasedRoute allowedRoles={['seller', 'admin']} >
+                            <SellerDashboard />
+                        </RoleBasedRoute>
+                    }
+                />
+
+                <Route
+                    path="/buyer"
+                    element={
+                        <RoleBasedRoute allowedRoles={['buyer']} >
+                            <BuyerDashboard />
+                        </RoleBasedRoute>
+                    }
+                />
+                
+                {/* Route accessible by both Seller and Admin */}
+                <Route
+                    path="/manage-books"
+                    element={
+                        <RoleBasedRoute allowedRoles={['seller', 'admin']} >
+                            <ManageBooks />
+                        </RoleBasedRoute>
+                    }
+                />
+
+            </Routes>
+
+
+
+
