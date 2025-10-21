@@ -7,6 +7,7 @@ import UserCreate from '../models/user.model.js';
 import Book from '../models/book.model.js'
 
 
+
 // Register User, It Works
 export const userRegister = async (req, res) => {
 
@@ -84,7 +85,7 @@ export const userLogin = async (req, res) => {
         // res.cookie('access_token', token, { httpOnly: true, expires: expiryDate  }) Optional expiration time
         res.cookie('access_token', token, { httpOnly: true })
             .status(200)
-            .json({ status: true, message: 'this USER Got the TOKEN successfully', user: { _id: user._id, email: user.email, password: user.password } });
+            .json({ status: true, message: 'this USER Got the TOKEN successfully', user: { _id: user._id, email: user.email, password: user.password, onlinename: user.onlinename } });
 
         console.log("USER got the token ===>", user) //it shows user's data in the Terminal
 
@@ -108,45 +109,172 @@ export const userOut = (req, res) => {
 
 
 
-
+// 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+// ORIGINAL start it works ==================================
 // createBook, to routes/userRoutes.js
+// export const createBook = async (req, res) => {
+
+//     const book = req.body; // <form> will send this data or from Postman
+
+//     if (!book.bookname || !book.price || !book.author) {
+//         return res.status(400).json({ success: false, message: "Please provide all fields" });
+//     }
+
+//     const newBook = new Book(book);
+
+//     try {
+//         await newBook.save();
+//         res.status(201).json({ success: true, data: newBook });
+//     } catch (error) {
+//         console.error("Error in creating product:", error.message);
+//         res.status(500).json({ success: false, message: "Server Error" });
+//     }
+// };
+// ORIGINAL end it works =====================================
+
+
+
+
+
+// this 'createBook' works OK
+// seller _id comes from req Redux CreateBook.jsx
+//MODIFIED from ORIGINAL above
+// create a book with the 'seller' added in the Book Schema model
 export const createBook = async (req, res) => {
 
-    const book = req.body; // <form> will send this data or from Postman
+    //const { bookname, author, price, sellerID } = req.body; // <form> will send this data or from Postman
 
-    if (!book.bookname || !book.price || !book.author) {
-        return res.status(400).json({ success: false, message: "Please provide all fields" });
-    }
+    // approach-1 for 'sellerID'
+    const { bookname, author, price, seller } = req.body; // <form> will send this data or from Postman
 
-    const newBook = new Book(book);
+    //const SELLER = seller._id
+
+    // approach-2 for 'sellerID'
+    //const {sellerID} = req.query; // in URL the data after question mark ==> ?(here is the req.query)
+    console.log("the book name is ===>", bookname)
+    console.log("SERVER, the seller _id is ===>", seller)// it works
+    console.log("seller._id", seller)// it works
+
+    // approach-3 for 'sellerID' (approach-3 the best approach)
+     //const {sellerID} = req.user + middleware verifyToken;
+
+
+    // if (!bookname || !author || !price) {
+    //     return res.status(400).json({ success: false, message: "Please provide all fields" });
+    // }
+
+    //const newBook = new Book(book);
 
     try {
-        await newBook.save();
+
+        // it works
+        if (!bookname || !author || !price || !seller) {
+            return res.status(400).json({ success: false, message: "Please provide all fields" });
+        }
+        
+        // payload/data(all the information of newBook)
+        // const newBook = {
+        //     bookname,
+        //     author,
+        //     price,
+        //     seller: seller
+        // };
+        //await Book.create(newBook);
+
+        // it works
+        const newBook = new Book({
+            bookname,
+            author,
+            price,
+            seller,  // it works as expected if seller is a valid Object _id
+        });
+        await newBook.save(newBook);// it works
         res.status(201).json({ success: true, data: newBook });
+
+
     } catch (error) {
-        console.error("Error in creating product:", error.message);
+        console.error("Error in creating Book:", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
     }
 };
+//11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
 
 
 
 
 
+// 22222222222222222222222222222222222222222222222222222222222222222222
+// ORIGINAL, get all books, it works, start ==================
+// export const getAllBooks = async (req, res) => {
+//     try {
+//         const allbooks = await Book.find({});
+//         res.status(200).json({ success: true, data: allbooks });
+//     } catch (error) {
+//         console.log("Error in fetching products:", error.message);
+//         res.status(500).json({ success: false, message: "Server Error" });
+//     }
+// };
+// ORIGINAL, get all books, it works, end ==================
 
 
 
-// get all books
+// AAA MODIFIED from ORIGINAL above getAllBooks
+// export const getAllBooks = async (req, res) => {
+
+//     const {seller} = req.query;
+//     console.log("const getAllBooks, the seller is ===>", seller)
+
+//     try {
+//         const allBooksByParticularSeller = await Book.find({
+//             seller: seller// all the books of the particular seller (not all the website sellers)
+//         });
+
+//         res.status(200).json({ success: true, data: allBooksByParticularSeller });
+
+//     } catch (error) {
+//         console.log("Error in fetching products:", error.message);
+//         res.status(500).json({ success: false, message: "Server Error" });
+//     }
+// };
+// AAA
+
+
+// BBB
 export const getAllBooks = async (req, res) => {
+    const { seller } = req.params; // seller _id from request parameters
+    console.log("seller data from getAllBooks controller ===> ", seller)
+
     try {
-        const allbooks = await Book.find({});
-        res.status(200).json({ success: true, data: allbooks });
+        // Find books by seller _id
+         // ORIGINAL: const books = await Book.find({ seller: seller });
+         const books = await Book.find({ seller: seller }).populate('seller');
+      
+        if (!books.length) {
+            return res.status(404).json({ success: false, message: "No books found for this seller" });
+        }
+
+        res.status(200).json({ success: true, data: books });
+
     } catch (error) {
-        console.log("Error in fetching products:", error.message);
+        console.error("Error fetching books for seller:", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
     }
 };
+// BBB
+// 22222222222222222222222222222222222222222222222222222222222222222222222222222222222
 
+
+
+// all books from all sellers
+export const getAllBooksFromAllSellers = async (req, res) => {
+    try {
+        const books = await Book.find().populate('seller'); // Fetches all books and populates seller details/data
+        res.status(200).json({ success: true, data: books });
+    } catch (error) {
+        console.error("Error fetching all books:", error.message);
+        res.status(500).json({ success: false, message: "Server Error for all books fetching" });
+    }
+};
 
 
 

@@ -19,6 +19,14 @@ const bookSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+
+        // a book added by this seller:
+        seller: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Onlineuser',//from user.model.js
+            required: true,
+        },
+        
     },
 
     {
@@ -26,6 +34,7 @@ const bookSchema = new mongoose.Schema(
     }
 );
 
-const Book = mongoose.model("createdbook", bookSchema);
+// const Book = mongoose.model("createdbook", bookSchema); //ORIGINAL
+const Book = mongoose.model("createdbookwithseller", bookSchema);
 
 export default Book;
