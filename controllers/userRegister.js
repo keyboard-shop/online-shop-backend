@@ -80,7 +80,7 @@ export const userLogin = async (req, res) => {
             return res.status(400).json({ status: false, message: 'Wrong Credentials' });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ _id: user._id, onlinename: user.onlinename }, process.env.JWT_SECRET);
         // const expiryDate = new Date(Date.now() + 3600000); // 1 hour Optional expiration time
         // res.cookie('access_token', token, { httpOnly: true, expires: expiryDate  }) Optional expiration time
         res.cookie('access_token', token, { httpOnly: true })
@@ -276,6 +276,39 @@ export const getAllBooksFromAllSellers = async (req, res) => {
     }
 };
 
+
+
+
+
+// it works
+export const getPersonalPage = async (req, res) => {
+
+
+    // it works
+    try {
+        // ORIGINAL    res.json({ message: "Access granted Welcome, Welcome, WElcome", userId: req.userId, onlinename: res.onlinename, token: res.locals.token});
+        // ORIGINAL     res.json({ message: "Access granted, Welcome To Your Personal Page", userId: req.userId, token: res.locals.token });
+   
+             // Getting the onlinename from req.userId 
+             const user = await UserCreate.findById(req.userId); 
+             if (!user) {
+                 return res.status(404).json({ message: "User not found" });
+             }
+     
+             res.json({
+                 message: "Access granted. Welcome!",
+                 userId: req.userId,
+                 onlinename: user.onlinename, 
+                 token: res.locals.token
+             });
+
+
+    } catch (error) {
+        console.error("Error Personal Page:", error.message);
+        res.status(500).json({ success: false, message: "Server Error for Personal Page" });
+    }
+};
+// ====================================================================================
 
 
 
