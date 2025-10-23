@@ -116,3 +116,64 @@ Example-5
 
 
 
+     ====================================================================================
+
+
+          Option-1 Client side
+         
+        A  <Route element={<PrivateRoute />}>
+            <Route path='/dashboard/' element={<DashboardPage />} />
+          </Route>
+
+       
+        B export default function PrivateRoute() {
+          const { currentUser } = useSelector(state => state.user)
+          return currentUser ? <Outlet /> : <Navigate to='/login' />
+           }
+
+
+
+
+
+
+        Option-2 Server side
+
+        A  <Route path='/personal-page' element={<PersonalPage />} />
+
+        B  router.get('/personal-page', verifyToken, getPersonalPage)
+
+        C  function verifyToken(req, res, next) {
+            try {
+      
+               const token = req.cookies?.access_token; 
+               .................
+               next();
+            });
+          } catch (err) {
+               .................
+          }
+         }
+          export default verifyToken
+
+
+
+
+
+
+            for  model Schema()
+
+            role: {
+            type: String,
+            enum: ["seller", "buyer", "admin"],
+            default: "buyer",
+            }, 
+
+
+            
+             <RoleBasedRoute allowedRoles={['seller', 'admin']} >
+                    <ManageBooks />
+             </RoleBasedRoute>
+
+
+
+

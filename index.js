@@ -20,7 +20,7 @@ const app = express()
 
 app.use(express.json());
 
-app.use(cookieParser());
+app.use(cookieParser());// MANDATORY
 
 //app.use(cors({ origin: ['https://online-shop-frontend-theta.vercel.app/'], credentials: true }))
 //app.use(cors({ origin: ['https://online-shop-frontend-theta.vercel.app'], credentials: true }))//<==== IT Works for Vercel
